@@ -218,6 +218,15 @@ section { position: relative; z-index: 1; }
 }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
+.profile-pic {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00d4aa;
+  box-shadow: 0 0 12px rgba(0,212,170,0.25);
+}
+
 /* floating GPA badge */
 .hero-badge {
   position: absolute;
@@ -604,14 +613,4 @@ section { position: relative; z-index: 1; }
   .stats-grid { grid-template-columns: 1fr; }
   .skills-wrapper { grid-template-columns: 1fr; }
 }
-.profile-pic {
-  position: absolute;
-  right: 3rem;
-  top: 35%;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #00d4aa;
-  box-shadow: 0 0 25px rgba(0,212,170,0.4);
-}
+
