@@ -318,7 +318,7 @@
     section {
       padding: clamp(60px, 8vw, 100px) clamp(20px, 8vw, 120px);
       position: relative; z-index: 1;
-      opacity: 0; transform: translateY(24px);
+      opacity: 1; transform: none;
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
     section.visible { opacity: 1; transform: none; }
@@ -400,7 +400,7 @@
     }
     .tl-item {
       position: relative; margin-bottom: 40px;
-      opacity: 0; transform: translateX(-16px);
+      opacity: 1; transform: none;
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .tl-item.visible { opacity: 1; transform: none; }
@@ -1125,21 +1125,27 @@
   </footer>
 
   <script>
-    // ── Intersection observer for reveals ──
+    // ── Scroll-reveal (progressive enhancement — won't hide content if JS fails) ──
+    document.querySelectorAll('section:not(.hero), .tl-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+    });
+
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          e.target.classList.add('visible');
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
           // stat bar animation
           e.target.querySelectorAll('.stat-bar-fill').forEach(bar => {
-            const w = bar.style.getPropertyValue('--w') || bar.getAttribute('style').match(/--w:([\d%]+)/)?.[1];
-            if (w) setTimeout(() => bar.style.width = w, 100);
+            const m = bar.getAttribute('style') && bar.getAttribute('style').match(/--w:([\d%]+)/);
+            if (m) setTimeout(() => bar.style.width = m[1], 150);
           });
           // counters
           if (e.target.id === 'stats') animateCounters();
         }
       });
-    }, { threshold: 0.08 });
+    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('section, .tl-item').forEach(el => io.observe(el));
 
@@ -1182,14 +1188,3 @@
             ticks: { display: false },
             grid: { color: 'rgba(255,255,255,0.06)' },
             angleLines: { color: 'rgba(255,255,255,0.06)' },
-            pointLabels: {
-              color: '#6b6b80',
-              font: { family: "'JetBrains Mono'", size: 11 }
-            }
-          }
-        }
-      }
-    });
-
-    // ── Smooth scroll ──
-    document.querySelectorAll('a[href^="#"]').forEach
